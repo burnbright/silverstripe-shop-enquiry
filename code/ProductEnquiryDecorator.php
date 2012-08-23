@@ -12,11 +12,17 @@ class ProductEnquiryDecorator extends Extension{
 		//TODO: update items that are the same
 		//TODO: properly handle Variations
 			//$this->owner->getBuyable($data) ??
+			
+		Enquiry::clear();	//clear any past enquiries
+		
 		$quantity = isset($data['Quantity']) ? (int)$data['Quantity'] : 1;
 		$item = $this->owner->createItem($quantity,$data);
 		$enquiry = Enquiry::find_or_make();
-		$enquiry->Items()->add($item);
+		$enquiry->getComponents('Items')->add($item);
 		
+		if(Director::is_ajax()){
+			return $this->EnquiryForm()->forAjaxTemplate();
+		}
 		$this->owner->redirect(Controller::join_links($this->owner->Link(),"enquire"));
 		return;
 	}
