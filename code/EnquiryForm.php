@@ -18,7 +18,6 @@ class EnquiryForm extends Form{
 			'Email',
 			'Message'
 		);
-		
 		parent::__construct($controller, $name, $fields, $actions,$validator);
 		$this->extend('updateForm');
 	}
@@ -36,13 +35,11 @@ class EnquiryForm extends Form{
 	function submitenquiry($data,$form){
 		$enquiry = Enquiry::find_or_make();
 		$form->saveInto($enquiry);
-		//$form->sessionMessage("Thankyou for your enquiry","Good");
 		$enquiry->write();
 		$email = $enquiry->createEmail();
 		$email->send();
 		Enquiry::clear();
-		
-		//set messages
+		$this->Controller()->Form()->sessionMessage("Thankyou for your enquiry.","good");
 		$this->Controller()->redirect($this->Controller()->Link());
 	}
 

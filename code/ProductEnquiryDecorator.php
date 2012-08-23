@@ -16,7 +16,7 @@ class ProductEnquiryDecorator extends Extension{
 		Enquiry::clear();	//clear any past enquiries
 		
 		$quantity = isset($data['Quantity']) ? (int)$data['Quantity'] : 1;
-		$item = $this->owner->createItem($quantity,$data);
+		$item = $form->getBuyable($data)->createItem($quantity,$data);
 		$enquiry = Enquiry::find_or_make();
 		$enquiry->getComponents('Items')->add($item);
 		
@@ -29,14 +29,19 @@ class ProductEnquiryDecorator extends Extension{
 	
 	function enquire(){
 		return array(
-			'AddProductForm' => $this->EnquiryForm(), //could be changd to just Form
-			'VariationForm' => $this->EnquiryForm()
+			'Form' => $this->EnquiryForm(),
+			'AddProductForm' => $this->EnquiryForm(), //deprecated
+			'VariationForm' => $this->EnquiryForm(), //deprecated
 		);
 	}
 	
 	function EnquiryForm(){
 		$form =  new EnquiryForm($this->owner);
 		return $form;
+	}
+	
+	function updateForm($form){
+		$form->Actions()->push(new FormAction('startenquiry','Enquire'));
 	}
 	
 }
