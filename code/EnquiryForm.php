@@ -42,5 +42,13 @@ class EnquiryForm extends Form{
 		$this->Controller()->Form()->sessionMessage("Thankyou for your enquiry.","good");
 		$this->Controller()->redirect($this->Controller()->Link());
 	}
+	
+	function forAjaxTemplate(){
+		$rendered = parent::forAjaxTemplate();
+		if($scripts = Requirements::get_custom_scripts()){
+			$rendered .= "<script type=\"text/javascript\">\n//<![CDATA[ \n".$scripts."</script>";
+		}
+		return $rendered;
+	}
 
 }
