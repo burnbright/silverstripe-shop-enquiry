@@ -1,6 +1,21 @@
 <?php
 
-class ProductEnquiryDecorator extends Extension{
+class ProductEnquiryDecorator extends DataExtension{
+
+	static $db = array(
+		'AllowEnquiry' => 'Boolean'
+	);
+
+	function updateCMSFields(FieldList $fields){
+		$fields->addFieldToTab("Root.Main",
+			CheckboxField::create("AllowEnquiry","Allow enquiries on this product"),
+			"Metadata"
+		);
+	}
+
+}
+
+class ProductControllerEnquiryDecorator extends Extension{
 	
 	static $allowed_actions = array(
 		'enquire',
@@ -33,12 +48,14 @@ class ProductEnquiryDecorator extends Extension{
 	}
 	
 	function EnquiryForm(){
-		$form =  new EnquiryForm($this->owner);
-		return $form;
+		return new EnquiryForm($this->owner);
 	}
 	
 	function updateForm($form){
-		$form->Actions()->push(new FormAction('startenquiry','Enquire'));
+		if($this->owner->AllowEnquiry){
+			$form->Actions()->push(new FormAction('startenquiry',_t("AddProductForm.ENQUIRE",'Enquire')));
+			$form->Actions()->removeByName('action_addtocart');
+		}
 	}
 	
 }

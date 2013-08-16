@@ -1,4 +1,5 @@
 <?php
 
-Object::add_extension("Product_Controller", "ProductEnquiryDecorator");
-Object::add_extension("OrderItem", "EnquiryOrderItem");
+Product::add_extension("ProductEnquiryDecorator");
+Product_Controller::add_extension("ProductControllerEnquiryDecorator");
+OrderItem::add_extension("EnquiryOrderItem");

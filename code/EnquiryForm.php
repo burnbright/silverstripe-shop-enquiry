@@ -3,14 +3,14 @@ class EnquiryForm extends Form{
 	
 	function __construct($controller, $name = "EnquiryForm"){
 		$content = SiteConfig::current_site_config()->EnquiryFormMesssage;
-		$fields = new FieldSet(
+		$fields = new FieldList(
 			new TextField("FirstName","First Name"),
 			new TextField("Surname","Surame"),
 			new EmailField("Email","Email"),
 			new TextareaField("Message","Your Message"),
 			new LiteralField("Content","<div>$content</div>")
 		);	
-		$actions = new FieldSet(
+		$actions = new FieldList(
 			new FormAction('submitenquiry',"Send Enquiry")	
 		);
 		$validator = new RequiredFields(

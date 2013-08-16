@@ -1,13 +1,9 @@
 <?php
 
-class EnquiryOrderItem extends DataObjectDecorator{
+class EnquiryOrderItem extends DataExtension{
 	
-	function extraStatics(){
-		return array(
-			'has_one' => array(
-				'Enquiry' => 'Enquiry'	
-			)	
-		);
-	}
-	
+	static $has_one = array(
+		'Enquiry' => 'Enquiry'	
+	);
+
 }
