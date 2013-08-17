@@ -13,7 +13,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% control Items %>
+			<% loop Items %>
 				<tr>
 					<td><a href="$Link">$TableTitle</a>
 						<% if SubTitle %><br/>$Subtitle<% end_if %></td>
@@ -21,7 +21,7 @@
 					<td>$Quantity</td>
 					<td>$Total.Nice</td>
 				</tr>
-			<% end_control %>
+			<% end_loop %>
 		</tbody>
 	</table>
 <% end_if %>
