@@ -7,10 +7,12 @@ class ProductEnquiryDecorator extends DataExtension{
 	);
 
 	function updateCMSFields(FieldList $fields){
-		$fields->addFieldToTab("Root.Main",
-			CheckboxField::create("AllowEnquiry","Allow enquiries on this product"),
-			"Metadata"
-		);
+		if(!Enquire::config()->global_enquire){
+			$fields->addFieldToTab("Root.Main",
+				CheckboxField::create("AllowEnquiry","Allow enquiries on this product"),
+				"Metadata"
+			);
+		}
 	}
 
 }
@@ -52,7 +54,7 @@ class ProductControllerEnquiryDecorator extends Extension{
 	}
 	
 	function updateForm($form) {
-		if($this->owner->AllowEnquiry){
+		if($this->owner->AllowEnquiry || Enquiry::config()->global_enquire){
 			$form->Actions()->push(new FormAction('startenquiry',_t("AddProductForm.ENQUIRE",'Enquire')));
 			$form->Actions()->removeByName('action_addtocart');
 		}
