@@ -26,13 +26,12 @@ class ProductControllerEnquiryDecorator extends Extension{
 	);
 	
 	function startenquiry($data,$form) {
-		//TODO: update items that are the same
 		Enquiry::clear();	//clear any past enquiries
 		$quantity = isset($data['Quantity']) ? (int)$data['Quantity'] : 1;
 		if($buyable = $form->getBuyable($data)){
 			$item = $buyable->createItem($quantity,$data);
 			$enquiry = Enquiry::find_or_make();
-			$enquiry->getComponents('Items')->add($item);
+			$enquiry->Items()->add($item);
 		}
 		if(Director::is_ajax()){
 			return $this->EnquiryForm()->forAjaxTemplate();

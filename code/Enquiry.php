@@ -26,7 +26,7 @@ class Enquiry extends DataObject{
 		'Email'	
 	);
 	
-	static function find_or_make() {
+	public static function find_or_make() {
 		$enquiry = Session::get('ShopEnquiry');
 		if(!$enquiry){
 			$enquiry = new Enquiry();
@@ -37,11 +37,23 @@ class Enquiry extends DataObject{
 		return $enquiry;
 	}
 	
-	static function clear() {
+	public static function clear() {
 		Session::set('ShopEnquiry',null);
 		Session::clear('ShopEnquiry');
 	}
 	
+	function getCMSFields() {
+		return FieldList::create(
+			LiteralField::create("content",
+				$this->renderWith("EnquiryEmail_content")
+			)
+		);
+	}
+
+	function canEdit($member = null){
+		return false;
+	}
+
 	function getName() {
 		return implode(' ',array_filter(array($this->FirstName,$this->Surname)));
 	}

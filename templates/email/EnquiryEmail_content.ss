@@ -1,11 +1,12 @@
 <% if Title %><h1>$Title</h1><% end_if %>
-<h2>$Name</h2>
+<h2>$Name: <a href="mailto:$Email">$Email</a></h2>
+
 <% if Message %><p>$Message</p><% end_if %>
 <% if Items %>
-	<p>The following item<% if Items.Plural %>s are<% else %> is<% end_if %> being enquired about:</p>
-	<table>
+	<p><strong>The following item<% if Items.Plural %>s are<% else %> is<% end_if %> being enquired about:</strong></p>
+	<table width="100%" class="ss-gridfield-table">
 		<thead>
-			<tr>
+			<tr class="title">
 				<th>Product</th>
 				<th>Price</th>
 				<th>Quantity</th>
@@ -23,5 +24,8 @@
 				</tr>
 			<% end_loop %>
 		</tbody>
+		<tfoot>
+			<td colspan="4"></td>
+		</tfoot>
 	</table>
 <% end_if %>

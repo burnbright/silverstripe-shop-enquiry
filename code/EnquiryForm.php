@@ -5,7 +5,7 @@ class EnquiryForm extends Form{
 		$content = SiteConfig::current_site_config()->EnquiryFormMesssage;
 		$fields = new FieldList(
 			new TextField("FirstName","First Name"),
-			new TextField("Surname","Surame"),
+			new TextField("Surname","Surname"),
 			new EmailField("Email","Email"),
 			new TextareaField("Message","Your Message"),
 			new LiteralField("Content","<div>$content</div>")
