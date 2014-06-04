@@ -25,7 +25,7 @@ class EnquiryForm extends Form{
 	function validate(){
 		$data = $this->getData();
 		$valid = parent::validate();
-		if(!isset($data['AgreeToTerms']) || !(bool)$data['AgreeToTerms']){
+		if(isset($data['AgreeToTerms']) && !(bool)$data['AgreeToTerms']){
 			$this->sessionMessage(_t("EnquiryForm.MUSTAGREEETERMS","You must agree to the terms and conditions"), "bad");
 			return false;
 		}

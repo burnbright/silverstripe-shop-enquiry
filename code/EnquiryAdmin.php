@@ -2,12 +2,12 @@
 
 class EnquiryAdmin extends ModelAdmin{
 	
-	static $url_segment = "enquiries";
+	private static $url_segment = "enquiries";
 	
-	static $menu_title = "Enquiries";
+	private static $menu_title = "Enquiries";
 	
-	static $managed_models = array(
-		"Enquiry","EnquiryType"
+	private static $managed_models = array(
+		"Enquiry"
 	);
 	
 }
