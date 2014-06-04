@@ -2,7 +2,7 @@
 
 class ProductEnquiryDecorator extends DataExtension{
 
-	static $db = array(
+	private static $db = array(
 		'AllowEnquiry' => 'Boolean'
 	);
 
@@ -17,13 +17,13 @@ class ProductEnquiryDecorator extends DataExtension{
 
 class ProductControllerEnquiryDecorator extends Extension{
 	
-	static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'enquire',
 		'startenquiry',
 		'EnquiryForm'
 	);
 	
-	function startenquiry($data,$form){
+	function startenquiry($data,$form) {
 		//TODO: update items that are the same
 		Enquiry::clear();	//clear any past enquiries
 		$quantity = isset($data['Quantity']) ? (int)$data['Quantity'] : 1;
@@ -39,7 +39,7 @@ class ProductControllerEnquiryDecorator extends Extension{
 		return;
 	}
 	
-	function enquire(){
+	function enquire() {
 		return array(
 			'Form' => $this->EnquiryForm(),
 			'AddProductForm' => $this->EnquiryForm(), //deprecated
@@ -47,11 +47,11 @@ class ProductControllerEnquiryDecorator extends Extension{
 		);
 	}
 	
-	function EnquiryForm(){
+	function EnquiryForm() {
 		return new EnquiryForm($this->owner);
 	}
 	
-	function updateForm($form){
+	function updateForm($form) {
 		if($this->owner->AllowEnquiry){
 			$form->Actions()->push(new FormAction('startenquiry',_t("AddProductForm.ENQUIRE",'Enquire')));
 			$form->Actions()->removeByName('action_addtocart');

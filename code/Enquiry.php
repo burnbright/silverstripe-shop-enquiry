@@ -2,7 +2,7 @@
 
 class Enquiry extends DataObject{
 	
-	static $db = array(
+	private static $db = array(
 		'FirstName' => 'Varchar',
 		'Surname' => 'Varchar',
 		'Email' => 'Varchar',
@@ -11,41 +11,42 @@ class Enquiry extends DataObject{
 		'Message' => 'Text'
 	);
 	
-	static $has_many = array(
+	private static $has_many = array(
 		'Items' => 'OrderItem'	
 	);
 	
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Created',
 		'Name'
 	);
 	
-	static $searchable_fields= array(
+	private static $searchable_fields = array(
 		'FirstName',
 		'Surname',
 		'Email'	
 	);
 	
-	static function find_or_make(){
+	static function find_or_make() {
 		$enquiry = Session::get('ShopEnquiry');
 		if(!$enquiry){
 			$enquiry = new Enquiry();
 			$enquiry->write();
 			Session::set('ShopEnquiry',$enquiry);
 		}
+		
 		return $enquiry;
 	}
 	
-	static function clear(){
+	static function clear() {
 		Session::set('ShopEnquiry',null);
 		Session::clear('ShopEnquiry');
 	}
 	
-	function getName(){
+	function getName() {
 		return implode(' ',array_filter(array($this->FirstName,$this->Surname)));
 	}
 	
-	function createEmail($subject = "Website Enquiry", $template = "GenericEmail"){
+	function createEmail($subject = "Website Enquiry", $template = "GenericEmail") {
 		$content = $this->renderWith("EnquiryEmail_content");
 		$to = Email::getAdminEmail();
 		$email = new Email($this->Email,$to,$subject);
@@ -53,6 +54,7 @@ class Enquiry extends DataObject{
 		$email->populateTemplate($this);
 		$email->populateTemplate(array('Body' => $content));
 		$this->extend('updateReceiptEmail',$email);
+
 		return $email;
 	}
 	
