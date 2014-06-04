@@ -7,7 +7,7 @@ class ProductEnquiryDecorator extends DataExtension{
 	);
 
 	function updateCMSFields(FieldList $fields){
-		if(!Enquire::config()->global_enquire){
+		if(!Enquiry::config()->global_enquire){
 			$fields->addFieldToTab("Root.Main",
 				CheckboxField::create("AllowEnquiry","Allow enquiries on this product"),
 				"Metadata"
