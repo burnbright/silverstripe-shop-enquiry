@@ -24,9 +24,21 @@ class ProductControllerEnquiryDecorator extends Extension{
 		'startenquiry',
 		'EnquiryForm'
 	);
+
+	/**
+	 * Add enquiry action to product form.
+	 */
+	function updateForm($form) {
+		if($this->owner->AllowEnquiry || Enquiry::config()->global_enquire){
+			$form->Actions()->push(new FormAction('startenquiry',_t("AddProductForm.ENQUIRE",'Enquire')));
+			$form->Actions()->removeByName('action_addtocart');
+		}
+	}
 	
-	function startenquiry($data,$form) {
-		Enquiry::clear();	//clear any past enquiries
+	/**
+	 * Start an enquiry.
+	 */
+	function startenquiry($data, $form) {
 		$quantity = isset($data['Quantity']) ? (int)$data['Quantity'] : 1;
 		if($buyable = $form->getBuyable($data)){
 			$item = $buyable->createItem($quantity,$data);
@@ -50,13 +62,6 @@ class ProductControllerEnquiryDecorator extends Extension{
 	
 	function EnquiryForm() {
 		return new EnquiryForm($this->owner);
-	}
-	
-	function updateForm($form) {
-		if($this->owner->AllowEnquiry || Enquiry::config()->global_enquire){
-			$form->Actions()->push(new FormAction('startenquiry',_t("AddProductForm.ENQUIRE",'Enquire')));
-			$form->Actions()->removeByName('action_addtocart');
-		}
 	}
 	
 }
