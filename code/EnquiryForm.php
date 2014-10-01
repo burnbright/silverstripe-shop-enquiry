@@ -32,14 +32,15 @@ class EnquiryForm extends Form{
 		return $valid;
 	}
 	
-	function submitenquiry($data,$form){
+	function submitenquiry($data, $form){
 		$enquiry = Enquiry::find_or_make();
 		$form->saveInto($enquiry);
+		$enquiry->Sent = date('Y-m-d H:i:s');
 		$enquiry->write();
 		$email = $enquiry->createEmail();
 		$email->send();
 		Enquiry::clear();
-		$this->Controller()->Form()->sessionMessage("Thankyou for your enquiry.","good");
+		$form->sessionMessage("Thankyou for your enquiry.","good");
 		$this->Controller()->redirect($this->Controller()->Link());
 	}
 	

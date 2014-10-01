@@ -8,7 +8,9 @@ class Enquiry extends DataObject{
 		'Email' => 'Varchar',
 		
 		'Title' => 'Varchar',
-		'Message' => 'Text'
+		'Message' => 'Text',
+
+		'Sent' => 'Datetime'
 	);
 	
 	private static $has_many = array(
@@ -16,8 +18,9 @@ class Enquiry extends DataObject{
 	);
 	
 	private static $summary_fields = array(
-		'Created',
-		'Name'
+		'Sent.Nice' => 'Sent',
+		'Name',
+		'Email'
 	);
 	
 	private static $searchable_fields = array(
@@ -26,22 +29,26 @@ class Enquiry extends DataObject{
 		'Email'	
 	);
 	
+	private static $default_sort = "Created DESC";
+
+	public static $sessionkey = "ShopEnquiryID";
+	
 	public static function find_or_make() {
 		$enquiry = Enquiry::get()->byID(
-			(int)Session::get('ShopEnquiryID')
+			(int)Session::get(self::$sessionkey)
 		);
 		if(!$enquiry){
 			$enquiry = new Enquiry();
 			$enquiry->write();
-			Session::set('ShopEnquiryID', $enquiry->ID);
+			Session::set(self::$sessionkey, $enquiry->ID);
 		}
 		
 		return $enquiry;
 	}
 	
 	public static function clear() {
-		Session::set('ShopEnquiryID',null);
-		Session::clear('ShopEnquiryID');
+		Session::set(self::$sessionkey, null);
+		Session::clear(self::$sessionkey);
 	}
 	
 	function getCMSFields() {
