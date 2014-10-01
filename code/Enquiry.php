@@ -27,19 +27,21 @@ class Enquiry extends DataObject{
 	);
 	
 	public static function find_or_make() {
-		$enquiry = Session::get('ShopEnquiry');
+		$enquiry = Enquiry::get()->byID(
+			(int)Session::get('ShopEnquiryID')
+		);
 		if(!$enquiry){
 			$enquiry = new Enquiry();
 			$enquiry->write();
-			Session::set('ShopEnquiry',$enquiry);
+			Session::set('ShopEnquiryID', $enquiry->ID);
 		}
 		
 		return $enquiry;
 	}
 	
 	public static function clear() {
-		Session::set('ShopEnquiry',null);
-		Session::clear('ShopEnquiry');
+		Session::set('ShopEnquiryID',null);
+		Session::clear('ShopEnquiryID');
 	}
 	
 	function getCMSFields() {
