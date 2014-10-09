@@ -41,7 +41,12 @@ class EnquiryForm extends Form{
 		$email->send();
 		Enquiry::clear();
 		$form->sessionMessage("Thankyou for your enquiry.","good");
-		$this->Controller()->redirect($this->Controller()->Link());
+		$this->Controller()->redirect(
+			Controller::join_links(
+				$this->Controller()->Link(),
+				'enquire'
+			)
+		);
 	}
 	
 	function forAjaxTemplate(){
