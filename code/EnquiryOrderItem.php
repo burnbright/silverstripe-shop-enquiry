@@ -1,9 +1,9 @@
 <?php
 
-class EnquiryOrderItem extends DataExtension{
-	
-	static $has_one = array(
-		'Enquiry' => 'Enquiry'	
-	);
-
+class EnquiryOrderItem extends DataExtension
+{
+    
+    public static $has_one = array(
+        'Enquiry' => 'Enquiry'
+    );
 }
