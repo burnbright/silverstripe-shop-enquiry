@@ -42,7 +42,9 @@ class EnquiryForm extends Form
         $enquiry->Sent = date('Y-m-d H:i:s');
         $enquiry->write();
         $email = $enquiry->createEmail();
+        $this->extend('beforeEnquirySend', $enquiry);
         $email->send();
+        $this->extend('afterEnquirySend', $enquiry);
         Enquiry::clear();
         $form->sessionMessage(_t('Enquiry.THANK_YOU', 'Thankyou for your enquiry.'),"good");
         $this->Controller()->redirect(
