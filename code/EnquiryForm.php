@@ -42,7 +42,7 @@ class EnquiryForm extends Form
         $enquiry->Sent = date('Y-m-d H:i:s');
         $enquiry->write();
         $email = $enquiry->createEmail();
-        $this->extend('beforeEnquirySend', $enquiry);
+        $this->extend('beforeEnquirySend', $enquiry, $email);
         $email->send();
         $this->extend('afterEnquirySend', $enquiry);
         Enquiry::clear();
