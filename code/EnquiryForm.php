@@ -6,14 +6,14 @@ class EnquiryForm extends Form
     {
         $content = SiteConfig::current_site_config()->EnquiryFormMesssage;
         $fields = new FieldList(
-            new TextField("FirstName", "First Name"),
-            new TextField("Surname", "Surname"),
-            new EmailField("Email", "Email"),
-            new TextareaField("Message", "Your Message"),
+            new TextField("FirstName", _t('Enquiry.FIRST_NAME', 'First Name')),
+            new TextField("Surname", _t('Enquiry.SURNAME', 'Surname')),
+            new EmailField("Email", _t('Enquiry.EMAIL', 'Email')),
+            new TextareaField("Message", _t('Enquiry.MESSAGE', 'Your Message')),
             new LiteralField("Content", "<div>$content</div>")
         );
         $actions = new FieldList(
-            new FormAction('submitenquiry', "Send Enquiry")
+            new FormAction('submitenquiry', _t('Enquiry.SUBMIT', 'Send Enquiry'))
         );
         $validator = new RequiredFields(
             'FirstName',
@@ -42,9 +42,11 @@ class EnquiryForm extends Form
         $enquiry->Sent = date('Y-m-d H:i:s');
         $enquiry->write();
         $email = $enquiry->createEmail();
+        $this->extend('beforeEnquirySend', $enquiry, $email);
         $email->send();
+        $this->extend('afterEnquirySend', $enquiry);
         Enquiry::clear();
-        $form->sessionMessage("Thankyou for your enquiry.", "good");
+        $form->sessionMessage(_t('Enquiry.THANK_YOU', 'Thankyou for your enquiry.'),"good");
         $this->Controller()->redirect(
             Controller::join_links(
                 $this->Controller()->Link(),
